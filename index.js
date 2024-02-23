@@ -299,25 +299,30 @@ function convertImageToKindleCompatiblePngAsync(
   inputPath,
   outputPath
 ) {
-  return new Promise((resolve, reject) => {
-    gm(inputPath)
-      .options({
-        imageMagick: config.useImageMagick === true
-      })
-      .gamma(pageConfig.removeGamma ? 1.0/2.2 : 1.0)
-// doesnt seem to be an option in imageMagick?
-//      .dither(pageConfig.dither)
-      .rotate("white", pageConfig.rotation)
-      .type(pageConfig.colorMode)
-      .level(pageConfig.blackLevel, pageConfig.whiteLevel)
-      .bitdepth(pageConfig.grayscaleDepth)
-      .quality(100)
-      .write(outputPath, (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-  });
+  let renderout;
+  try {
+   renderout = new Promise((resolve, reject) => {
+     gm(inputPath)
+       .options({
+         imageMagick: config.useImageMagick === true
+       })
+       .gamma(pageConfig.removeGamma ? 1.0/2.2 : 1.0)
+       .dither(pageConfig.dither)
+       .rotate("white", pageConfig.rotation)
+       .type(pageConfig.colorMode)
+       .level(pageConfig.blackLevel, pageConfig.whiteLevel)
+       .bitdepth(pageConfig.grayscaleDepth)
+       .quality(100)
+       .write(outputPath, (err) => {
+         if (err) {
+           reject(err);
+         } else {
+           resolve();
+         }
+       });
+   });
+  } catch (e) {
+    console.error("Failed to gm convert", e);
+  }
+  return renderout;
 }
