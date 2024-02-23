@@ -1,5 +1,6 @@
 #!/usr/bin/with-contenv bashio
 
+while [ /bin/true ]; do
 bashio::log.info "Loading config..."
 
 export HA_BASE_URL="$(bashio::config 'HA_BASE_URL')"
@@ -37,3 +38,5 @@ bashio::log.info "Starting server..."
 
 cd /app
 exec /usr/bin/npm start
+sleep 10
+done

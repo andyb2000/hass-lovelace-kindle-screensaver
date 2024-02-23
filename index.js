@@ -305,7 +305,8 @@ function convertImageToKindleCompatiblePngAsync(
         imageMagick: config.useImageMagick === true
       })
       .gamma(pageConfig.removeGamma ? 1.0/2.2 : 1.0)
-      .dither(pageConfig.dither)
+// doesnt seem to be an option in imageMagick?
+//      .dither(pageConfig.dither)
       .rotate("white", pageConfig.rotation)
       .type(pageConfig.colorMode)
       .level(pageConfig.blackLevel, pageConfig.whiteLevel)
